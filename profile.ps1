@@ -142,3 +142,17 @@ function prompt {
 if ( Test-Path $WorkplaceProfile -ErrorAction SilentlyContinue ) {
   . $WorkplaceProfile
 }
+
+# ISEでない場合はここで終了
+
+if ( ! $psISE ) { exit $true }
+
+# フォント・ツールバー設定
+
+$psISE.Options.Fontsize = 6
+$psISE.Options.FontName = $DefaultFont
+$psISE.Options.ShowToolBar = $false
+
+# プロファイル
+
+psEdit ($profile, (Join-Path $ProfileRoot 'memo.ps1'))
