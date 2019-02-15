@@ -88,14 +88,12 @@ function Import-Json {
 # 変数設定
 
 if ( ! (gv DefaultVariable -ErrorAction SilentlyContinue) ) {
-  (
-    @{ Name = 'DefaultVariable'; Value = (gv | select Name,Value); Scope = 'Global' },
-    @{ Name = 'ProgramFiles'; Value = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)}); Scope = 'Global' },
-    @{ Name = 'ProfileRoot'; Value = $PSScriptRoot; Scope = 'Global' },
-    @{ Name = 'WorkplaceProfile'; Value = (Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'); Scope = 'Global' },
-    @{ Name = 'DefaultFont'; Value = '恵梨沙フォント+Osaka－等幅'; Scope = 'Global' },
-    @{ Name = 'GitPath'; Value = '~/Git'; Scope = 'Global' }
-  ) | % { sv @_ }
+  [object]$global:DefaultVariable = (gv | select Name,Value)
+  [string[]]$global:ProgramFiles = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)})
+  [string]$global:ProfileRoot = $PSScriptRoot
+  [string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
+  [string]$global:DefaultFont = '恵梨沙フォント+Osaka－等幅'
+  [string]$global:GitPath = '~/Git'
 }
 
 # Path追加
