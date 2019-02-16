@@ -32,7 +32,7 @@ function Get-FontFamily {
 }
 
 ## 指定した二つのファイルのうち、古いものを新しいもので上書きする
-function Bakup-Item {
+function Backup-Item {
   param(
     [Parameter(Mandatory)][string]$Base,
     [Parameter(Mandatory)][string]$Target
