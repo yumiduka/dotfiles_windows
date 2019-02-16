@@ -109,6 +109,17 @@ function cd {
   Set-Location $Path
 }
 
+## whichコマンド
+function which {
+  param(
+    [parameter(Mandatory, ValueFromPipeline)][string]$Name
+  )
+
+  $env:Path.Split(';') | % {
+    ls $_ -ErrorAction SilentlyContinue | ? { $_.BaseName -eq $Name -or $_.Name -eq $Name }
+  }
+}
+
 # 変数設定
 
 if ( ! (gv DefaultVariable -Scope global -ErrorAction SilentlyContinue) ) {
