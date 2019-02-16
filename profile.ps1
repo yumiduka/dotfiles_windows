@@ -85,9 +85,33 @@ function Import-Json {
   gc $Path -Encoding $Encoding | ConvertFrom-Json
 }
 
+## cdを改良
+if ( gal cd -ErrorAction SilentlyContinue ) { rm alias:cd }
+function cd {
+  param(
+    [parameter(ValueFromPipeline)]$Target
+  )
+
+  $ErrorActionPreference = 'Stop'
+
+  $Path = $(if ( ! $Target ) {
+    $HOME
+  } elseif ( $Target.GetType().Name -eq 'String' ) {
+    $Target
+  } elseif ( $Target.GetType().BaseType.Name -eq 'FileSystemInfo' ) {
+    $Target.FullName
+  } else {
+    return $false
+  })
+
+  [string[]]$global:OldPwd += (Get-Location).ProviderPath
+
+  Set-Location $Path
+}
+
 # 変数設定
 
-if ( ! (gv DefaultVariable -ErrorAction SilentlyContinue) ) {
+if ( ! (gv DefaultVariable -Scope global -ErrorAction SilentlyContinue) ) {
   [object]$global:DefaultVariable = (gv | select Name,Value)
   [string[]]$global:ProgramFiles = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)})
   [string]$global:ProfileRoot = $PSScriptRoot
