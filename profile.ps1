@@ -180,4 +180,4 @@ $psISE.Options.ShowToolBar = $false
 
 # プロファイル
 
-psEdit ($profile, (Join-Path $ProfileRoot 'memo.ps1'))
+psEdit ($profile, (Join-Path $ProfileRoot 'scratch.ps1'))
