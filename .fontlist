@@ -19,6 +19,8 @@ Consolata
 Courier
 Courier New
 Courier-New
+cursive
+dnp-shuei-gothic-kin-std
 Droid Sans
 FabricMDL2Icons
 Fira Sans
@@ -30,6 +32,8 @@ Helvetica Condensed Bold
 Helvetica Neue
 Hiragino Kaku Gothic Pro
 Hiragino Kaku Gothic ProN
+HiraKakuProN-W3
+Homemade Apple
 Inconsolata
 inherit
 IPA MONAPGOTHIC
@@ -75,11 +79,13 @@ Myriad Set Pro
 Myriad Web
 Noto Sans
 Noto Sans JP
+Noto Serif JP
 Open Sans
 Osaka
 Oxygen
 proxima-nova
 PT Sans
+PT Sans Caption
 QTS Font
 Raleway
 Ricty
@@ -97,9 +103,12 @@ SF Pro Icons
 SF Pro JP
 SF Pro Text
 Sintony
+Source Code Pro
+source-han-sans-japanese
 STIXGeneral
 system-ui
 tahoma
+tbudgothic-std
 Times
 Times New Roman
 TitilliumText22LMedium
@@ -118,5 +127,3 @@ YuGothicM
 游ゴシック
 游ゴシック Medium
 游ゴシック体
-Noto Serif JP
-Source Code Pro
