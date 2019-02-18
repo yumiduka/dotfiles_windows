@@ -98,7 +98,7 @@ function cd {
     $HOME
   } elseif ( $Target.GetType().Name -eq 'String' ) {
     $Target
-  } elseif ( $Target.GetType().BaseType.Name -eq 'FileSystemInfo' ) {
+  } elseif ( $Target.GetType().Name -eq 'DirectoryInfo' ) {
     $Target.FullName
   } else {
     return $false
@@ -158,7 +158,7 @@ if ( ! (gv DefaultVariable -Scope global -ErrorAction SilentlyContinue) ) {
 function prompt {
   Write-Host ''
   Write-Host ('[' + (Get-Date).ToString('yyyy/MM/dd hh:mm:ss') + ']') -ForegroundColor Yellow -NoNewline
-  Write-Host (' ' + $Pwd.Path) -ForegroundColor Cyan
+  Write-Host (' ' + $Pwd.ProviderPath) -ForegroundColor Cyan
   if ( [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' ) { '# ' } else { '> ' }
 }
 
