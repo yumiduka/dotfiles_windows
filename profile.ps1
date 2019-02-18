@@ -153,16 +153,6 @@ if ( ! (gv DefaultVariable -Scope global -ErrorAction SilentlyContinue) ) {
   New-PSDrive @_ > $null
 }
 
-# CapsLock -> LeftCtrl (初期設定に移行予定)
-
-#$RegValue = @()
-#('00','00','00','00','00','00','00','00','02','00','00','00','1d','00','3a','00','00','00','00','00') | % { [Byte]('0x' + $_) }
-# sp -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout' -Name 'Scancode Map' -Value $RegValue
-
-# エクスプローラーの3Dオブジェクト削除 (初期設定に移行予定)
-
-ri 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}' -ErrorAction SilentlyContinue
-
 # プロンプト設定
 
 function prompt {
