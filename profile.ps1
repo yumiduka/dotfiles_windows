@@ -93,6 +93,37 @@ function Import-Json {
   gc $Path -Encoding $Encoding | ConvertFrom-Json
 }
 
+## 画像を切り抜き
+function Cut-Image {
+  param(
+    [Parameter(Mandatory, ValueFromPipeline)][IO.FileInfo]$File,
+    [Parameter(Mandatory)][Int32]$X,
+    [Parameter(Mandatory)][Int32]$Y,
+    [Parameter(Mandatory)][Int32]$Width,
+    [Parameter(Mandatory)][Int32]$Height
+  )
+
+  $BackupFile = ($File.FullName -replace "$",'.org')
+  if ( Test-Path $BackupFile ) {
+    return ('"{0}"のバックアップファイルが既に存在します。' -f $File.Name)
+  }
+
+  cp $File.FullName $BackupFile
+  [datetime[]]$TimeStamp = ($File.CreationTime, $File.LastWriteTime)
+
+  $SourceImage = New-Object System.Drawing.Bitmap($File.FullName)
+  $Size = New-Object System.Drawing.Rectangle($X, $Y, $Width, $Height)
+  $DestImage = $SourceImage.Clone($Size, $SourceImage.PixelFormat)
+  $SourceImage.Dispose()
+  $DestImage.Save($File.FullName, [System.Drawing.Imaging.ImageFormat]::($File.Extension.Replace('.','')))
+  $DestImage.Dispose() 
+
+  Set-ItemProperty $File -Name CreationTime -Value $TimeStamp[0]
+  Set-ItemProperty $File -Name LastWriteTime -Value $TimeStamp[1]
+
+  ls $File.FullName $BackupFile
+}
+
 ## cdを改良
 if ( gal cd -ErrorAction SilentlyContinue ) { rm alias:cd }
 function cd {
