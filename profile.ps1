@@ -1,4 +1,10 @@
-﻿# 関数設定
+﻿# 二重読み込み防止
+
+if ( Get-Command -Name (gc $PSCommandPath | sls '^function').Line[0].Split()[1] -ErrorAction SilentlyContinue ) {
+  exit $true
+}
+
+# 関数設定
 
 ## timeコマンドを指定回数実行して、回数・平均時間・最長時間・最短時間を表示
 function Get-ScriptTime {
