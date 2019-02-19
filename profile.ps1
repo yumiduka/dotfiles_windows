@@ -136,6 +136,12 @@ function which {
 [string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
 [string]$global:DefaultFont = '恵梨沙フォント+Osaka－等幅'
 [string]$global:GitPath = '~/Git'
+[scriptblock]$global:IsAdmin = { [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' }
+[scriptblock]$global:Prompt = {
+  Write-Host ('{0}{1}' -f "`n", (Get-Date).ToString('<yyyy/MM/dd hh:mm:ss>')) -ForegroundColor Yellow -NoNewline
+  Write-Host (' {0} ' -f $Pwd.ProviderPath.Replace($HOME,'~')) -ForegroundColor Cyan
+  if ( & $IsAdmin ) { '# ' } else { '> ' }
+}
 
 # Path追加
 
