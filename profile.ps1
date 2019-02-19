@@ -128,14 +128,12 @@ function which {
 
 # 変数設定
 
-if ( ! (gv DefaultVariable -Scope global -ErrorAction SilentlyContinue) ) {
-  [object]$global:DefaultVariable = (gv | select Name,Value)
-  [string[]]$global:ProgramFiles = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)})
-  [string]$global:ProfileRoot = $PSScriptRoot
-  [string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
-  [string]$global:DefaultFont = '恵梨沙フォント+Osaka－等幅'
-  [string]$global:GitPath = '~/Git'
-}
+[object]$global:DefaultVariable = (gv | select Name,Value)
+[string[]]$global:ProgramFiles = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)})
+[string]$global:ProfileRoot = $PSScriptRoot
+[string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
+[string]$global:DefaultFont = '恵梨沙フォント+Osaka－等幅'
+[string]$global:GitPath = '~/Git'
 
 # Path追加
 
