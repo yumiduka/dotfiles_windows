@@ -58,9 +58,9 @@ function Backup-Item {
     [System.IO.FileSystemInfo[]]$Files += (ls $_)
   }
 
-  if ( $Files[0].LastWriteTime -gt $Files[1].LastAccessTime ) {
+  if ( $Files[0].LastWriteTime -gt $Files[1].LastWriteTime ) {
     cp -Path $Files[0] -Destination $Files[1]
-  } elseif ( $Files[0].LastWriteTime -lt $Files[1].LastAccessTime ) {
+  } elseif ( $Files[0].LastWriteTime -lt $Files[1].LastWriteTime ) {
     cp -Path $Files[1] -Destination $Files[0]
   }
 }
