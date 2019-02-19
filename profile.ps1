@@ -167,12 +167,7 @@ function which {
 
 # プロンプト設定
 
-function prompt {
-  Write-Host ''
-  Write-Host ('[' + (Get-Date).ToString('yyyy/MM/dd hh:mm:ss') + ']') -ForegroundColor Yellow -NoNewline
-  Write-Host (' ' + $Pwd.ProviderPath) -ForegroundColor Cyan
-  if ( [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' ) { '# ' } else { '> ' }
-}
+function prompt { & $Prompt }
 
 # 環境別プロファイルを読み込み(場所により異なる設定が必要な場合に使用)
 
@@ -186,6 +181,7 @@ if ( ! $psISE ) { exit $true }
 
 # フォント・ツールバー設定
 
+$psISE.Options.SelectedScriptPaneState = "Top"
 $psISE.Options.Fontsize = 6
 $psISE.Options.FontName = $DefaultFont
 $psISE.Options.ShowToolBar = $false
