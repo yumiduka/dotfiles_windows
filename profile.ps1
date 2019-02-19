@@ -46,8 +46,10 @@ function Backup-Item {
 
   if ( (Test-Path $Base) -and (! (Test-Path $Target)) ) {
     cp -Path $Base -Destination $Target
+    return
   } elseif ( (! (Test-Path $Base)) -and (Test-Path $Target) ) {
     cp -Path $Target -Destination $Base
+    return
   }
 
   $ErrorActionPreference = 'Stop'
