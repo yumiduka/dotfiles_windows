@@ -133,15 +133,15 @@ function cd {
 
   $ErrorActionPreference = 'Stop'
 
-  $Path = $(if ( $Target.GetType().Name -eq 'Int32' -and $OldPwd[$Target] ) {
+  $Path = if ( $Target -is [Int] -and $OldPwd[$Target] ) {
     $OldPwd[$Target].Path
-  } elseif ( $Target.GetType().Name -eq 'String' ) {
+  } elseif ( $Target -is [string] ) {
     $Target
-  } elseif ( $Target.GetType().Name -eq 'DirectoryInfo' ) {
+  } elseif ( $Target -is [IO.DirectoryInfo] ) {
     $Target.FullName
   } else {
     $HOME
-  })
+  }
 
   [object[]]$global:OldPwd += Get-Location | select @{n='Id';e={$global:OldPwd.Count}},@{n='Path';e={$_.ProviderPath}}
 
