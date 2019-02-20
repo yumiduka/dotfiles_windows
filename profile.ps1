@@ -217,6 +217,6 @@ $psISE.Options.Fontsize = 6
 $psISE.Options.FontName = $DefaultFont
 $psISE.Options.ShowToolBar = $false
 
-# プロファイル
+# scratchとプロファイルをISEで開く
 
-psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $profile, $WorkplaceProfile)
+psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $profile, $WorkplaceProfile) -ErrorAction SilentlyContinue
