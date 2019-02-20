@@ -133,7 +133,7 @@ function cd {
 
   $ErrorActionPreference = 'Stop'
 
-  $Path = if ( $Target -is [Int] -and $OldPwd[$Target] ) {
+  [string]$Path = if ( $Target -is [Int] -and $OldPwd[$Target] ) {
     $OldPwd[$Target].Path
   } elseif ( $Target -is [string] ) {
     $Target
