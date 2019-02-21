@@ -99,8 +99,8 @@ function Cut-Image {
     [Parameter(Mandatory, ValueFromPipeline)][IO.FileInfo]$File,
     [Parameter(Mandatory)][Int32]$X,
     [Parameter(Mandatory)][Int32]$Y,
-    [Parameter(Mandatory)][Int32]$Width,
-    [Parameter(Mandatory)][Int32]$Height
+    [Int32]$Width,
+    [Int32]$Height
   )
 
   $BackupFile = ($File.FullName -replace "$",'.org')
@@ -112,6 +112,8 @@ function Cut-Image {
   [datetime[]]$TimeStamp = ($File.CreationTime, $File.LastWriteTime)
 
   $SourceImage = New-Object System.Drawing.Bitmap($File.FullName)
+  if ( ! $Width ) { $Width = $SourceImage.Width }
+  if ( ! $Height ) { $Height = $SourceImage.Height }
   $Size = New-Object System.Drawing.Rectangle($X, $Y, $Width, $Height)
   $DestImage = $SourceImage.Clone($Size, $SourceImage.PixelFormat)
   $SourceImage.Dispose()
