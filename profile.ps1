@@ -161,6 +161,15 @@ function which {
   }
 }
 
+## プロンプトの表示切替
+function Switch-Prompt {
+  if ( $global:DisplayDate ) {
+    rv DisplayDate -Scope global
+  } else {
+    $global:DisplayDate = (Get-Date).ToString('yyyy/MM/dd hh:mm:ss')
+  }
+}
+
 # 変数設定
 
 [object]$global:DefaultVariable = (gv | select Name,Value)
@@ -171,8 +180,10 @@ function which {
 [string]$global:GitPath = '~/Git'
 [scriptblock]$global:IsAdmin = { [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' }
 [scriptblock]$global:Prompt = {
-  Write-Host ('{0}{1}' -f "`n", (Get-Date).ToString('<yyyy/MM/dd hh:mm:ss>')) -ForegroundColor Yellow -NoNewline
-  Write-Host (' {0} ' -f $Pwd.ProviderPath.Replace($HOME,'~')) -ForegroundColor Cyan
+  if ( $global:DisplayDate ) {
+    Write-Host ('{0}[{1}]' -f "`n", $global:DisplayDate) -ForegroundColor Yellow -NoNewline
+    Write-Host (' {0} ' -f $Pwd.ProviderPath.Replace($HOME,'~')) -ForegroundColor Cyan
+  }
   if ( & $IsAdmin ) { '# ' } else { '> ' }
 }
 
@@ -200,7 +211,11 @@ function which {
 
 # プロンプト設定
 
+## ScriptBlock型の変数の内容をプロンプトとする
 function prompt { & $Prompt }
+
+## プロンプトを詳細表示に切り替える
+Switch-Prompt
 
 # 環境別プロファイルを読み込み(場所により異なる設定が必要な場合に使用)
 
