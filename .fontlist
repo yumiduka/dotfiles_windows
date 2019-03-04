@@ -1,5 +1,6 @@
 ﻿*sans-serif
 _courier new
+Andale Mono
 Apple TP
 -apple-system
 Arial
@@ -41,12 +42,12 @@ IPA Pゴシック
 Lato
 Liberation Mono
 LiHei Pro
+lucida console
 Lucida Grande
 M+ 1p
 mastodon-font-display
 mastodon-font-monospace
 mastodon-font-sans-serif
-Material Design Icons
 medium-content-sans-serif-font
 medium-content-serif-font
 medium-content-slab-serif-font
@@ -86,6 +87,7 @@ Oxygen
 proxima-nova
 PT Sans
 PT Sans Caption
+PT Serif
 QTS Font
 Raleway
 Ricty
