@@ -241,7 +241,7 @@ if ( $psISE ) {
 }
 
 ## scratchとプロファイルをISEで開く
-if ( Get-Command psEdit ) {
+if ( Get-Command psEdit -ErrorAction SilentlyContinue ) {
   psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $profile, $WorkplaceProfile) -ErrorAction SilentlyContinue
 }
 
