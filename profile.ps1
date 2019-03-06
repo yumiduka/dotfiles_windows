@@ -166,7 +166,7 @@ function Switch-Prompt {
   if ( $global:DisplayDate ) {
     rv DisplayDate -Scope global
   } else {
-    $global:DisplayDate = (Get-Date).ToString('yyyy/MM/dd hh:mm:ss')
+    [scriptblock]$global:DisplayDate = { (Get-Date).ToString('yyyy/MM/dd HH:mm:ss') }
   }
 }
 
@@ -181,7 +181,7 @@ function Switch-Prompt {
 [scriptblock]$global:IsAdmin = { [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' }
 [scriptblock]$global:Prompt = {
   if ( $global:DisplayDate ) {
-    Write-Host ('{0}[{1}]' -f "`n", $global:DisplayDate) -ForegroundColor Yellow -NoNewline
+    Write-Host ('{0}[{1}]' -f "`n", (& $global:DisplayDate)) -ForegroundColor Yellow -NoNewline
     Write-Host (' {0} ' -f $Pwd.ProviderPath.Replace($HOME,'~')) -ForegroundColor Cyan
   }
   if ( & $IsAdmin ) { '# ' } else { '> ' }
