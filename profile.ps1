@@ -4,7 +4,7 @@ if ( Get-Command -Name (gc $PSCommandPath | sls '^function').Line[0].Split()[1] 
   exit $true
 }
 
-# 関数設定
+# 関数・ScriptBlock変数設定
 
 ## timeコマンドを指定回数実行して、回数・平均時間・最長時間・最短時間を表示
 function Get-ScriptTime {
@@ -170,15 +170,12 @@ function Switch-Prompt {
   }
 }
 
-# 変数設定
+## 管理者権限確認
+[scriptblock]$global:IsAdmin = {
+  [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544'
+}
 
-[object]$global:DefaultVariable = (gv | select Name,Value)
-[string[]]$global:ProgramFiles = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)})
-[string]$global:ProfileRoot = $PSScriptRoot
-[string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
-[string]$global:DefaultFont = '恵梨沙フォント+Osaka－等幅'
-[string]$global:GitPath = '~/Git'
-[scriptblock]$global:IsAdmin = { [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' }
+## プロンプト表示内容
 [scriptblock]$global:Prompt = {
   if ( $global:DisplayDate ) {
     Write-Host ('{0}[{1}]' -f "`n", (& $global:DisplayDate)) -ForegroundColor Yellow -NoNewline
@@ -186,6 +183,22 @@ function Switch-Prompt {
   }
   if ( & $IsAdmin ) { '# ' } else { '> ' }
 }
+
+## UHD確認
+[scriptblock]$global:IsUHD = {
+  Get-CimInstance -ClassName Win32_VideoController | % {
+    $_.CurrentHorizontalResolution -gt 1920 -and $_.CurrentVerticalResolution -gt 1080
+  }
+}
+
+# 変数設定
+
+[object]$global:DefaultVariable = (gv | select Name,Value)
+[string[]]$global:ProgramFiles = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)})
+[string]$global:ProfileRoot = $PSScriptRoot
+[string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
+[string]$global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Diminished Discord' } else { '恵梨沙フォント+Osaka－等幅' }
+[string]$global:GitPath = '~/Git'
 
 # Path追加
 
@@ -217,23 +230,23 @@ function prompt { & $Prompt }
 ## プロンプトを詳細表示に切り替える
 Switch-Prompt
 
+# ISE設定
+ 
+## フォント・ツールバー設定
+if ( $psISE ) {
+  $psISE.Options.SelectedScriptPaneState = "Top"
+  $psISE.Options.Fontsize = if ( & $global:IsUHD ) { 9 } else { 6 }
+  $psISE.Options.FontName = $DefaultFont
+  $psISE.Options.ShowToolBar = $false
+}
+
+## scratchとプロファイルをISEで開く
+if ( Get-Command psEdit ) {
+  psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $profile, $WorkplaceProfile) -ErrorAction SilentlyContinue
+}
+
 # 環境別プロファイルを読み込み(場所により異なる設定が必要な場合に使用)
 
 if ( Test-Path $WorkplaceProfile -ErrorAction SilentlyContinue ) {
   . $WorkplaceProfile
 }
-
-# ISEでない場合はここで終了
-
-if ( ! $psISE ) { exit $true }
-
-# フォント・ツールバー設定
-
-$psISE.Options.SelectedScriptPaneState = "Top"
-$psISE.Options.Fontsize = 6
-$psISE.Options.FontName = $DefaultFont
-$psISE.Options.ShowToolBar = $false
-
-# scratchとプロファイルをISEで開く
-
-psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $profile, $WorkplaceProfile) -ErrorAction SilentlyContinue
