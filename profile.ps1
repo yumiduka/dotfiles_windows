@@ -26,7 +26,7 @@ function Get-FontFamily {
     [string]$Path = '~/Downloads/style.css',
     [string]$FontFile = '~/.fontlist',
     [string]$Encoding = 'utf8',
-    [string]$FontName = '恵梨沙フォント+Osaka－等幅'
+    [string]$FontName = $global:DefaultFont
   )
 
   if ( $psISE ) { psEdit $FontFile }
@@ -197,7 +197,7 @@ function Switch-Prompt {
 [string[]]$global:ProgramFiles = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)})
 [string]$global:ProfileRoot = $PSScriptRoot
 [string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
-[string]$global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Diminished Discord' } else { '恵梨沙フォント+Osaka－等幅' }
+[string]$global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
 [string]$global:GitPath = '~/Git'
 
 # Path追加
