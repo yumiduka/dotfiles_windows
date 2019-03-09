@@ -7,7 +7,7 @@ function Get-FontFamily {
     [Parameter(ValueFromPipeline)][string]$Path = '~/Downloads/style.css',
     [string]$FontFile = '~/.fontlist',
     [string]$Encoding = 'utf8',
-    [string]$FontName
+    [string]$FontName = $Global:DefaultFont
   )
 
   ## エラー時終了設定
