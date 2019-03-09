@@ -143,6 +143,6 @@ function Find-ChildItem {
   $FileList
 }
 
-# 関数・エイリアス公開
+# 関数公開
 
 Export-ModuleMember -Function *
