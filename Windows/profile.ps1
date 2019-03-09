@@ -6,20 +6,6 @@ if ( Get-Command -Name (gc $PSCommandPath | sls '^function').Line[0].Split()[1] 
 
 # 関数・ScriptBlock変数設定
 
-## timeコマンドを指定回数実行して、回数・平均時間・最長時間・最短時間を表示
-function Get-ScriptTime {
-  param(
-    [Parameter(Mandatory)][scriptblock]$Command,
-    [int32]$Count = 10,
-    [switch]$Table
-  )
-
-  $Time = (1..$Count) | % { (Measure-Command -Expression $Command).TotalMilliseconds } | measure -Average -Maximum -Minimum | select Count,Average,Maximum,Minimum,@{n='Script';e={$Command}}
-  if ( $Table ) { return $Time | ft -AutoSize }
-
-  return $Time
-}
-
 ## UserCSSでフォント設定を上書きするための設定をクリップボードとファイルに取得
 function Get-FontFamily {
   param(
@@ -126,41 +112,6 @@ function Cut-Image {
   ls $File.FullName $BackupFile
 }
 
-## cdを改良
-if ( gal cd -ErrorAction SilentlyContinue ) { rm alias:cd }
-function cd {
-  param(
-    [parameter(ValueFromPipeline)]$Target
-  )
-
-  $ErrorActionPreference = 'Stop'
-
-  [string]$Path = if ( $Target -is [Int] -and $OldPwd[$Target] ) {
-    $OldPwd[$Target].Path
-  } elseif ( $Target -is [string] ) {
-    $Target
-  } elseif ( $Target -is [IO.DirectoryInfo] ) {
-    $Target.FullName
-  } else {
-    $HOME
-  }
-
-  [object[]]$global:OldPwd += Get-Location | select @{n='Id';e={$global:OldPwd.Count}},@{n='Path';e={$_.ProviderPath}}
-
-  Set-Location $Path
-}
-
-## whichコマンド
-function which {
-  param(
-    [parameter(Mandatory, ValueFromPipeline)][string]$Name
-  )
-
-  $env:Path.Split(';') | % {
-    ls $_ -ErrorAction SilentlyContinue | ? { $_.BaseName -eq $Name -or $_.Name -eq $Name }
-  }
-}
-
 ## プロンプトの表示切替
 function Switch-Prompt {
   if ( $global:DisplayDate ) {
@@ -199,6 +150,17 @@ function Switch-Prompt {
 [string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
 [string]$global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
 [string]$global:GitPath = '~/Git'
+
+# エイリアス設定
+
+(
+  @{ Name = 'cd'; Value = 'Set-CurrentDirectory'; Option = 'AllScope'; Scope = 'Global' },
+  @{ Name = 'which'; Value = 'WhereIs-Command'; Option = 'AllScope'; Scope = 'Global' },
+  @{ Name = 'whereis'; Value = 'WhereIs-Command'; Option = 'AllScope'; Scope = 'Global' },
+  @{ Name = 'time'; Value = 'Get-ScriptTime'; Option = 'AllScope'; Scope = 'Global' }
+) | % {
+  sal @_
+}
 
 # Path追加
 
