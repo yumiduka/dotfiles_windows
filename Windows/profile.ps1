@@ -6,23 +6,6 @@ if ( Get-Command -Name (gc $PSCommandPath | sls '^function').Line[0].Split()[1] 
 
 # 関数・ScriptBlock変数設定
 
-## UserCSSでフォント設定を上書きするための設定をクリップボードとファイルに取得
-function Get-FontFamily {
-  param(
-    [string]$Path = '~/Downloads/style.css',
-    [string]$FontFile = '~/.fontlist',
-    [string]$Encoding = 'utf8',
-    [string]$FontName = $global:DefaultFont
-  )
-
-  if ( $psISE ) { psEdit $FontFile }
-
-  (gc $Path -Encoding $Encoding).Split(';').Split('}').Split('{') | ? { $_ -match "font-family" } | % { ($_ -replace 'font-family:').Split(',') -replace "'" -replace '"' -replace '!important' -replace "`t" -replace '^ *' -replace ' *$' } | sort -Unique | Out-File $FontFile -Encoding $Encoding -Append
-  $Fonts = (gc $FontFile -Encoding $Encoding | sort -Unique)
-  $Fonts | % { '@font-face { src: local("' + $FontName + '"); font-family: "' + $_ + '"; }' } | scb
-  $Fonts | Out-File $FontFile -Encoding $Encoding
-}
-
 ## 指定した二つのファイルのうち、古いものを新しいもので上書きする
 function Backup-Item {
   param(
