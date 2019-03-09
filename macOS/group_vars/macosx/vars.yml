@@ -1,0 +1,61 @@
+homebrew_taps:
+  - homebrew/boneyard
+
+homebrew_packages:
+  - name: ansible
+  - name: python
+  - name: python3
+  - name: go
+  - name: direnv
+  - name: git
+  - name: ghq
+  - name: peco
+  - name: tmux
+  - name: zsh
+  - name: zsh-syntax-highlighting
+  - name: vim
+  - name: mas
+  - name: exa
+  - name: youtube-dl
+  - name: ffmpeg
+  - name: zopfli
+  # curl
+  - name: openssl
+  - name: curl
+    option: with-openssl
+
+homebrew_cask_packages:
+  - name: appcleaner
+  - name: powershell
+  - name: steam
+  - name: iina
+  - name: the-unarchiver
+  - name: dropbox
+  - name: google-japanese-ime
+  - name: obs
+  - name: discord
+
+mac_apps:
+  - id: 411213048
+    name: LadioCast
+  - id: 409201541
+    name: Pages
+  - id: 409203825
+    name: Numbers
+  - id: 409183694
+    name: Keynote
+  - id: 682658836
+    name: GarageBand
+  - id: 539883307 
+    name: LINE
+
+defaults_bool:
+  # iTunesの半分星を有効化
+  - domain: com.apple.iTunes
+    key: allow-half-stars
+  # Dockを自動的に隠す
+  - domain: com.apple.dock
+    key: autohide
+  # Dockの拡大機能を有効化
+  - domain: com.apple.dock
+    key: magnification

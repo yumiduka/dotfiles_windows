@@ -1,0 +1,8 @@
+- name: defaults type bool
+  osx_defaults:
+    domain: '{{ item.domain }}'
+    key: '{{ item.key }}'
+    type: bool
+    value: true
+    state: present
+  with_items: '{{ defaults_bool }}'

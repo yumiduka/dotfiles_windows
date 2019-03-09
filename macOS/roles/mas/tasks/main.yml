@@ -1,0 +1,6 @@
+- name: mas install
+  script: 'mas.sh {{ item.id }}'
+  with_items: '{{ mac_apps }}'
+  register: result
+  changed_when: result.rc == 1
+  failed_when: result.rc not in [0, 1]

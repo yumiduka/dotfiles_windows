@@ -1,0 +1,25 @@
+- name: homebrew update
+  homebrew:
+    update_homebrew: yes
+    upgrade_all: yes
+
+#- name: homebrew tap
+#  homebrew_tap:
+#    name: '{{ item }}'
+#    state: present
+#  with_items: '{{ homebrew_taps }}'
+
+- name: homebrew packages install
+  homebrew:
+    name: '{{ item.name }}'
+    state: present
+    install_options: '{{ item.options | default([]) }}'
+  with_items: '{{ homebrew_packages }}'
+
+- name: homebrew cask packages install
+  homebrew_cask:
+    name: '{{ item.name }}'
+    state: installed
+  environment:
+    HOMEBREW_CASK_OPTS: "--appdir=/Applications"
+  with_items: '{{ homebrew_cask_packages }}'
