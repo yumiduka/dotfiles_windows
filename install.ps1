@@ -14,8 +14,7 @@ if ( ! (Test-Path $ProfileRoot) ) {
 (
   @{ ItemType = 'Directory'; Path = $ProfileRoot },
   @{ ItemType = 'SymbolicLink'; Path = $env:PSModulePath.Split(';')[0]; Value = (Join-Path $InitialRoot 'Modules') },
-  @{ ItemType = 'SymbolicLink'; Path = (Join-Path $ProfileRoot 'Microsoft.PowerShell_profile.ps1'); Value = (Join-Path $InitialRoot 'profile.ps1') },
-  @{ ItemType = 'SymbolicLink'; Path = (Join-Path $ProfileRoot 'Microsoft.PowerShellISE_profile.ps1'); Value = (Join-Path $InitialRoot 'profile.ps1') },
+  @{ ItemType = 'SymbolicLink'; Path = $profile.CurrentUserAllHosts; Value = (Join-Path $InitialRoot 'profile.ps1') },
   @{ ItemType = 'SymbolicLink'; Path = '~\.fontlist'; Value = (Join-Path $PSScriptRoot '.fontlist') }
 ) | % {
   ## 既に存在したら終了
