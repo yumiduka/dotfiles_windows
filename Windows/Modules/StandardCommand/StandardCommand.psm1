@@ -1,4 +1,6 @@
-﻿# ディレクトリ移動コマンド
+﻿# 関数
+
+## ディレクトリ移動コマンド
 
 function Set-CurrentDirectory {
   param(
@@ -55,7 +57,7 @@ function WhereIs-Command {
   }
 }
 
-# 指定コマンドを指定回数(初期値:10)実行して、回数・平均時間・最長時間・最短時間を表示
+## 指定コマンドを指定回数(初期値:10)実行して、回数・平均時間・最長時間・最短時間を表示
 
 function Get-ScriptTime {
   param(
@@ -81,6 +83,66 @@ function Get-ScriptTime {
   }
 }
 
-# 関数公開
+## 指定ディレクトリ配下のファイル・ディレクトリの情報を取得
+
+function Find-ChildItem {
+  param(
+    [switch]$File,
+    [switch]$Directory,
+    [switch]$Recurse = $true,
+    [string]$Name,
+    [string]$Parent,
+    [string]$Extension,
+    [string]$FullName,
+    [Parameter(ValueFromPipeline)][string]$Path = (Get-Location).ProviderPath
+  )
+
+  ## エラー時終了設定
+  $ErrorActionPreference = 'Stop'
+
+  ## $Fileと$Directoryを同時に指定した場合、Get-ChildItemは何も表示しないので、どちらも$falseに変更
+  if ( $File -and $Directory ) {
+    $File = $Directory = $false
+  }
+
+  ## スプラッティング定義
+  $Option = @{
+    Path = $Path
+    File = $File
+    Directory = $Directory
+    Recurse = $Recurse
+  }
+
+  ## Get-ChildItem実行
+  $FileList = gci @Option
+
+  ## フルパスをフィルタ(正規表現)
+  if ( $FullName ) {
+    $FileList = $FileList | ? FullName -match $FullName
+  }
+
+  ## ファイル名をフィルタ(正規表現)
+  if ( $Name ) {
+    $FileList = $FileList | ? Name -match $Name
+  }
+
+  ## 親フォルダ名をフィルタ(正規表現)
+  if ( $Parent ) {
+    $FileList = $FileList | ? Parent -match $Parent
+  }
+
+  ## 拡張子指定
+  if ( $Extension ) {
+    if ( ! $Extension.StartsWith('.') ) {
+      $Extension = $Extension -replace '^','.'
+    }
+    $FileList = $FileList | ? Extension -eq $Extension
+  }
+
+  ## 標準出力に取得したファイル・ディレクトリを表示
+  $FileList
+}
+
+# 関数・エイリアス公開
 
 Export-ModuleMember -Function *

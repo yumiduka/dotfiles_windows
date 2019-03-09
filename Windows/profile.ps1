@@ -157,7 +157,8 @@ function Switch-Prompt {
   @{ Name = 'cd'; Value = 'Set-CurrentDirectory'; Option = 'AllScope'; Scope = 'Global' },
   @{ Name = 'which'; Value = 'WhereIs-Command'; Option = 'AllScope'; Scope = 'Global' },
   @{ Name = 'whereis'; Value = 'WhereIs-Command'; Option = 'AllScope'; Scope = 'Global' },
-  @{ Name = 'time'; Value = 'Get-ScriptTime'; Option = 'AllScope'; Scope = 'Global' }
+  @{ Name = 'time'; Value = 'Get-ScriptTime'; Option = 'AllScope'; Scope = 'Global' },
+  @{ Name = 'find'; Value = 'Find-ChildItem'; Option = 'AllScope'; Scope = 'Global' }
 ) | % {
   sal @_
 }
