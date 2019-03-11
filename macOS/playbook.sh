@@ -1,5 +1,5 @@
 #!/bin/sh
 
-SCRIPTROOT=$(cd $(dirname $0); pwd)
+cd $(dirname $0)
 
-ansible-playbook -i production ${SCRIPTROOT}/macosx.yml
+ansible-playbook -i production macosx.yml
