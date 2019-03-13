@@ -1,4 +1,13 @@
-﻿# ScriptBlock変数設定
+﻿# OS判定
+
+[string]$OS = switch -Regex ( $PSVersionTable.OS ) {
+  'Darwin'  { 'macOS' }
+  'Windows' { $Matches.Values }
+  $null     { 'WindowsPowerShell' }
+  default   { $_ }
+}
+
+# ScriptBlock変数設定
 
 ## プロンプトの表示切替
 function Switch-Prompt {
