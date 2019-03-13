@@ -20,7 +20,10 @@ function Switch-Prompt {
 
 ## 管理者権限確認
 [scriptblock]$global:IsAdmin = {
-  [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544'
+  switch -Regex ( $OS ) {
+    '^Windows' { [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' }
+    default    { (whoami) -match 'root' }
+  }
 }
 
 ## プロンプト表示内容
