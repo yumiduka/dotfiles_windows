@@ -2,23 +2,29 @@ homebrew_taps:
   - homebrew/boneyard
 
 homebrew_packages:
+  # 環境構築用
   - name: ansible
   - name: python
   - name: python3
+  - name: mas
+  # 言語
   - name: go
-  - name: direnv
+  # Git
   - name: git
   - name: ghq
+  # ターミナル関連
   - name: peco
   - name: tmux
   - name: zsh
   - name: zsh-syntax-highlighting
-  - name: vim
-  - name: mas
   - name: exa
+  # エディタ
+  - name: vim
   - name: youtube-dl
   - name: ffmpeg
   - name: zopfli
+  # なんだっけ…？
+  - name: direnv
   # curl
   - name: openssl
   - name: curl
