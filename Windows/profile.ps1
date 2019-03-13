@@ -1,6 +1,6 @@
 ﻿# OS判定
 
-[string]$OS = switch -Regex ( $PSVersionTable.OS ) {
+[String]$OS = switch -Regex ( $PSVersionTable.OS ) {
   'Darwin'  { 'macOS' }
   'Windows' { $Matches.Values }
   $null     { 'WindowsPowerShell' }
@@ -11,32 +11,32 @@
 
 ## プロンプトの表示切替
 function Switch-Prompt {
-  if ( $global:DisplayDate ) {
+  if ( $Global:DisplayDate ) {
     rv DisplayDate -Scope global
   } else {
-    [scriptblock]$global:DisplayDate = { (Get-Date).ToString('yyyy/MM/dd HH:mm:ss') }
+    [ScriptBlock]$Global:DisplayDate = { (Get-Date).ToString('yyyy/MM/dd HH:mm:ss') }
   }
 }
 
 ## 管理者権限確認
-[scriptblock]$global:IsAdmin = {
-  switch -Regex ( $OS ) {
+[ScriptBlock]$Global:IsAdmin = {
+  switch -Regex -CaseSensitive ( $OS ) {
     '^Windows' { [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' }
     default    { (whoami) -match 'root' }
   }
 }
 
 ## プロンプト表示内容
-[scriptblock]$global:Prompt = {
-  if ( $global:DisplayDate ) {
-    Write-Host ('{0}[{1}]' -f "`n", (& $global:DisplayDate)) -ForegroundColor Yellow -NoNewline
+[ScriptBlock]$Global:Prompt = {
+  if ( $Global:DisplayDate ) {
+    Write-Host ('{0}[{1}]' -f "`n", (& $Global:DisplayDate)) -ForegroundColor Yellow -NoNewline
     Write-Host (' {0} ' -f $Pwd.ProviderPath.Replace($HOME,'~')) -ForegroundColor Cyan
   }
   if ( & $IsAdmin ) { '# ' } else { '> ' }
 }
 
 ## UHD確認
-[scriptblock]$global:IsUHD = {
+[ScriptBlock]$Global:IsUHD = {
   Get-CimInstance -ClassName Win32_VideoController | % {
     $_.CurrentHorizontalResolution -gt 1920 -and $_.CurrentVerticalResolution -gt 1080
   }
@@ -44,32 +44,41 @@ function Switch-Prompt {
 
 # 変数設定
 
-[object]$global:DefaultVariable = (gv | select Name,Value)
-[string[]]$global:ProgramFiles = ('C:\Tools', $env:ProgramFiles, ${env:ProgramFiles(x86)})
-[string]$global:ProfileRoot = $PSScriptRoot
-[string]$global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
-[string]$global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
-[string]$global:GitPath = '~/Git'
+[String[]]$Global:ProgramFiles = ($env:ProgramFiles, ${env:ProgramFiles(x86)})
+[String]$Global:ProfileRoot = $PSScriptRoot
+[String]$Global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
+[String]$Global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
+[String]$Global:GitPath = '~/Git'
 
 # エイリアス設定
 
 (
-  @{ Name = 'cd'; Value = 'Set-CurrentDirectory'; Option = 'AllScope'; Scope = 'Global' },
-  @{ Name = 'which'; Value = 'WhereIs-Command'; Option = 'AllScope'; Scope = 'Global' },
-  @{ Name = 'whereis'; Value = 'WhereIs-Command'; Option = 'AllScope'; Scope = 'Global' },
-  @{ Name = 'time'; Value = 'Get-ScriptTime'; Option = 'AllScope'; Scope = 'Global' },
-  @{ Name = 'find'; Value = 'Find-ChildItem'; Option = 'AllScope'; Scope = 'Global' }
+  @{ Name = 'cd';      Value = 'Set-CurrentDirectory'; Option = 'AllScope'; Scope = 'Global' },
+  @{ Name = 'which';   Value = 'WhereIs-Command';      Option = 'AllScope'; Scope = 'Global' },
+  @{ Name = 'whereis'; Value = 'WhereIs-Command';      Option = 'AllScope'; Scope = 'Global' },
+  @{ Name = 'time';    Value = 'Get-ScriptTime';       Option = 'AllScope'; Scope = 'Global' },
+  @{ Name = 'find';    Value = 'Find-ChildItem';       Option = 'AllScope'; Scope = 'Global' }
 ) | % {
   sal @_
 }
 
 # Path追加
 
-(
-  (Split-Path $profile), # Profile
-  (ls $ProgramFiles '*vim*' -Directory -ErrorAction SilentlyContinue | ls -Filter 'vim.exe').DirectoryName, # vim
-  (ls 'C:\Windows\Microsoft.NET\Framework64' -Directory -ErrorAction SilentlyContinue | ls -Filter 'csc.exe' | sort VersionInfo)[-1].DirectoryName # .NET Framework
-) | % { if ( $env:Path.Split(';') -notcontains $_ ) { $env:Path += (';' + $_) } }
+& {
+  $ErrorActionPreference = 'SilentlyContinue'
+  (
+    (Split-Path $profile), # Profile
+    ($ProgramFiles | gci -Directory | ? Name -match 'vim' | gci | ? Name -match '^vim').DirectoryName, # vim
+    ('C:\Windows\Microsoft.NET\Framework64' | gci -Directory | gci | ? Name -eq 'csc.exe' | sort VersionInfo)[-1].DirectoryName # .NET Framework
+  ) | % {
+    switch -Regex -CaseSensitive ( $OS ) { 
+      'Windows' { $Delimiter = ';' }
+      default   { $Delimiter = ':' }
+    }
+
+    if ( $env:PATH.Split($Delimiter) -notcontains $_ ) { $env:PATH += ($Delimiter + $_) }
+  }
+}
 
 # LOCAL MACHINEとCURRENT USER以外のレジストリをマウント
 
@@ -98,7 +107,7 @@ Switch-Prompt
 ## フォント・ツールバー設定
 if ( $psISE ) {
   $psISE.Options.SelectedScriptPaneState = "Top"
-  $psISE.Options.Fontsize = if ( & $global:IsUHD ) { 9 } else { 6 }
+  $psISE.Options.Fontsize = if ( & $Global:IsUHD ) { 9 } else { 6 }
   $psISE.Options.FontName = $DefaultFont
   $psISE.Options.ShowToolBar = $false
 }
