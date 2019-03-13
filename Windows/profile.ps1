@@ -1,10 +1,4 @@
-﻿# 二重読み込み防止
-
-if ( Get-Command -Name (gc $PSCommandPath | sls '^function').Line[0].Split()[1] -ErrorAction SilentlyContinue ) {
-  exit $true
-}
-
-# ScriptBlock変数設定
+﻿# ScriptBlock変数設定
 
 ## プロンプトの表示切替
 function Switch-Prompt {
