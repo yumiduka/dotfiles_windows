@@ -108,7 +108,7 @@ function Switch-Prompt {
   }
 
   ## なければ追加
-  if ( ! (Test-Path ('{0}:' -f $_.Name) ) {
+  if ( ! (Test-Path ('{0}:' -f $_.Name)) ) {
     New-PSDrive @_ > $null
   }
 }
