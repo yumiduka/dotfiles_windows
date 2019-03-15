@@ -102,11 +102,15 @@ function Switch-Prompt {
   @{ Name = 'HKU';  PSProvider = 'Registry'; Root = 'HKEY_USERS' },
   @{ Name = 'HKCC'; PSProvider = 'Registry'; Root = 'HKEY_CURRENT_CONFIG' }
 ) | % {
-  if ( Get-PSDrive $_.Name -ErrorAction SilentlyContinue ) {
-    Write-Host ('ドライブレター "' + $_.Name + '" は既に使われていました。')
+  ## Windows以外でレジストリの場合はスキップ
+  if ( $OS -notmatch '^Windows' -and $_.PSProvider -eq 'Registry' ) {
     return
   }
-  New-PSDrive @_ > $null
+
+  ## なければ追加
+  if ( ! (Test-Path ('{0}:' -f $_.Name) ) {
+    New-PSDrive @_ > $null
+  }
 }
 
 # プロンプト設定
