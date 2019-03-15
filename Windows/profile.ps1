@@ -37,9 +37,24 @@ function Switch-Prompt {
 
 ## UHD確認
 [ScriptBlock]$Global:IsUHD = {
-  Get-CimInstance -ClassName Win32_VideoController | % {
-    $_.CurrentHorizontalResolution -gt 1920 -and $_.CurrentVerticalResolution -gt 1080
+  switch -Regex -CaseSensitive ( $OS ) {
+    '^Windows' {
+      Get-CimInstance -ClassName Win32_VideoController | % {
+        $Horizontal = $_.CurrentHorizontalResolution
+        $Vertical = $_.CurrentVerticalResolution
+      }
+    }
+    '^macOS$' {
+      $Display = /usr/sbin/system_profiler SPDisplaysDataType | ? { $_.Split(':')[0].Trim() -eq 'UI Looks like' } | % { $_.Trim().Split(':')[1].Trim() }
+      $Horizontal = $Display.Split()[0] | Sort-Object -Unique | select -Last 1
+      $Vertical = $Display.Split()[2] | Sort-Object -Unique | select -Last 1
+    }
+    default {
+      $Horizontal = 2560
+      $Vertical = 1440 
+    }
   }
+  $Horizontal -gt 1920 -and $Vertical -gt 1080
 }
 
 # 変数設定
