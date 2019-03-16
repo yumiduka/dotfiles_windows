@@ -1,24 +1,24 @@
 ﻿# 変数
 
-$ProfileRoot = (Split-Path $profile)
-$InitialRoot = (Join-Path $PSScriptRoot 'Windows')
-
-# Profile用ディレクトリ作成
-
-if ( ! (Test-Path $ProfileRoot) ) {
-  mkdir $ProfileRoot -Force
-}
+$ProfileRoot = Split-Path $PROFILE
+$InitialRoot = Join-Path $PSScriptRoot 'Windows'
 
 # Profile用ディレクトリ、シンボリックリンク作成
 
 (
-  @{ ItemType = 'Directory'; Path = $ProfileRoot },
+  @{ ItemType = 'Directory';    Path = $ProfileRoot },
   @{ ItemType = 'SymbolicLink'; Path = $env:PSModulePath.Split(';')[0]; Value = (Join-Path $InitialRoot 'Modules') },
-  @{ ItemType = 'SymbolicLink'; Path = $profile.CurrentUserAllHosts; Value = (Join-Path $InitialRoot 'profile.ps1') },
+  @{ ItemType = 'SymbolicLink'; Path = $PROFILE.CurrentUserAllHosts; Value = (Join-Path $InitialRoot 'profile.ps1') },
+  @{ ItemType = 'SymbolicLink'; Path = $PROFILE; Value = (Join-Path $InitialRoot (Split-Path -Leaf $PROFILE)) },
   @{ ItemType = 'SymbolicLink'; Path = '~\.fontlist'; Value = (Join-Path $PSScriptRoot '.fontlist') }
 ) | % {
-  ## 既に存在したら終了
+  ## 配布先が既に存在する場合、次のエントリへ進む
   if ( Test-Path $_.Path ) {
+    return
+  }
+
+  ## 配布元が存在しない場合、次のエントリへ進む(ISE用)
+  if ( ! (Test-Path $_.Value) ) {
     return
   }
 

@@ -60,7 +60,7 @@ function Switch-Prompt {
 # 変数設定
 
 [String[]]$Global:ProgramFiles = ($env:ProgramFiles, ${env:ProgramFiles(x86)})
-[String]$Global:ProfileRoot = Split-Path $PROFILE.CurrentUserCurrentHost
+[String]$Global:ProfileRoot = Split-Path $PROFILE
 [String]$Global:WorkplaceProfile = Join-Path $ProfileRoot 'WorkplaceProfile.ps1'
 [String]$Global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
 [String]$Global:GitPath = '~/Git'
@@ -120,21 +120,6 @@ function prompt { & $Prompt }
 
 ## プロンプトを詳細表示に切り替える
 Switch-Prompt
-
-# ISE設定
- 
-## フォント・ツールバー設定
-if ( $psISE ) {
-  $psISE.Options.SelectedScriptPaneState = "Top"
-  $psISE.Options.Fontsize = if ( & $Global:IsUHD ) { 9 } else { 6 }
-  $psISE.Options.FontName = $DefaultFont
-  $psISE.Options.ShowToolBar = $false
-}
-
-## scratchとプロファイルをISEで開く
-if ( Get-Command psEdit -ErrorAction SilentlyContinue ) {
-  psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $PROFILE.CurrentUserAllHosts, $WorkplaceProfile) -ErrorAction SilentlyContinue
-}
 
 # 環境別プロファイルを読み込み(場所により異なる設定が必要な場合に使用)
 
