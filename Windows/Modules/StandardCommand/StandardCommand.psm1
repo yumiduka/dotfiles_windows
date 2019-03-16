@@ -11,9 +11,9 @@ function Set-CurrentDirectory {
   $ErrorActionPreference = 'Stop'
 
   ## 引数の型により動作を変更
-  [string]$Path = if ( $Target -is [Int] -and $OldPwd[$Target] ) {
+  [string]$Path = if ( $Target -is [Int] -and $Global:OldPwd[$Target] ) {
     ## int型で$OldPwdのn番目が存在する場合、そのパスを移動先にする
-    $OldPwd[$Target].Path
+    $Global:OldPwd[$Target].Path
   } elseif ( $Target -is [string] ) {
     ## string型の場合、そのままパスを移動先にする
     $Target
@@ -26,8 +26,8 @@ function Set-CurrentDirectory {
   }
 
   ## 移動前に現在のディレクトリを$OldPwdに番号付きで格納する
-  [object[]]$global:OldPwd += Get-Location |
-    select @{n='Id';e={$global:OldPwd.Count}},
+  [object[]]$Global:OldPwd += Get-Location |
+    select @{n='Id';e={$Global:OldPwd.Count}},
            @{n='Path';e={$_.ProviderPath}}
 
   ## 移動
