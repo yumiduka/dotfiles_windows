@@ -1,10 +1,11 @@
 ﻿# OS判定
 
-[String]$OS = switch -Regex ( $PSVersionTable.OS ) {
-  'Darwin'  { 'macOS' }
-  'Windows' { $Matches.Values }
-  $null     { 'WindowsPowerShell' }
-  default   { $_ }
+[String]$OS = if ( $IsMacOS ) {
+  'macOS'
+} elseif ( $IsLinux ) {
+  'Linux'
+} else {
+  'Windows'
 }
 
 # ScriptBlock変数設定
@@ -12,18 +13,17 @@
 ## プロンプトの表示切替
 function Switch-Prompt {
   if ( $Global:DisplayDate ) {
-    rv DisplayDate -Scope global
+    rv DisplayDate -Scope Global
   } else {
     [ScriptBlock]$Global:DisplayDate = { (Get-Date).ToString('yyyy/MM/dd HH:mm:ss') }
   }
 }
 
 ## 管理者権限確認
-[ScriptBlock]$Global:IsAdmin = {
-  switch -Regex -CaseSensitive ( $OS ) {
-    '^Windows' { [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' }
-    default    { (whoami) -match 'root' }
-  }
+if ( $OS -eq 'Windows' ) {
+  [ScriptBlock]$Global:IsAdmin = [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544'
+} else {
+  [ScriptBlock]$Global:IsAdmin = (whoami) -match 'root'
 }
 
 ## プロンプト表示内容
@@ -37,19 +37,16 @@ function Switch-Prompt {
 
 ## UHD確認
 [ScriptBlock]$Global:IsUHD = {
-  switch -Regex -CaseSensitive ( $OS ) {
-    '^Windows' {
-      Get-CimInstance -ClassName Win32_VideoController | % {
-        $Horizontal = $_.CurrentHorizontalResolution
-        $Vertical = $_.CurrentVerticalResolution
-      }
+  switch ( $OS ) {
+    'Windows' {
+      $Horizontal, $Vertical = Get-CimInstance -ClassName Win32_VideoController | % { $_.CurrentHorizontalResolution, $_.CurrentVerticalResolution }
     }
-    '^macOS$' {
+    'macOS' {
       $Display = /usr/sbin/system_profiler SPDisplaysDataType | ? { $_.Split(':')[0].Trim() -eq 'UI Looks like' } | % { $_.Trim().Split(':')[1].Trim() }
       $Horizontal = $Display.Split()[0] | Sort-Object -Unique | select -Last 1
       $Vertical = $Display.Split()[2] | Sort-Object -Unique | select -Last 1
     }
-    default {
+    'Linux' {
       $Horizontal = 2560
       $Vertical = 1440 
     }
@@ -119,7 +116,7 @@ if ( (Split-Path -Leaf $env:SHELL) -eq 'pwsh' ) {
   @{ Name = 'HKCC'; PSProvider = 'Registry'; Root = 'HKEY_CURRENT_CONFIG' }
 ) | % {
   ## Windows以外でレジストリの場合はスキップ
-  if ( $OS -notmatch '^Windows' -and $_.PSProvider -eq 'Registry' ) {
+  if ( $OS -ne 'Windows' -and $_.PSProvider -eq 'Registry' ) {
     return
   }
 
