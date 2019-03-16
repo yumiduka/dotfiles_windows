@@ -78,14 +78,32 @@ function Switch-Prompt {
   sal @_
 }
 
-# Path追加
+# PATH初期値設定
+
+if ( (Split-Path -Leaf $env:SHELL) -eq 'pwsh' ) {
+  switch ( $OS ) {
+    'macOS' {
+      ## PowerShellのディレクトリを先頭にする
+      $env:PATH = $env:PATH.Split($PathDelimiter)[0]
+      ## bash用PATH初期値設定コマンドから初期値を末尾に追加
+      $env:PATH = ($env:PATH, (((/usr/libexec/path_helper) -split '"')[1] -replace $env:PATH)) -join $PathDelimiter
+      ## 両端のパス区切り文字を除外
+      $env:PATH = $env:PATH.Trim($PathDelimiter)
+    }
+    'Linux' {
+      # Linuxの環境が用意できたら追加予定。
+    }
+  }
+}
+
+# PATH追加
 
 & {
   $ErrorActionPreference = 'SilentlyContinue'
   (
-    (Split-Path $profile), # Profile
+    (Split-Path $PROFILE), # Profile
     ($ProgramFiles | gci -Directory | ? Name -match 'vim' | gci | ? Name -match '^vim').DirectoryName, # vim
-    ('C:\Windows\Microsoft.NET\Framework64' | gci -Directory | gci | ? Name -eq 'csc.exe' | sort VersionInfo)[-1].DirectoryName # .NET Framework
+    ('C:\Windows\Microsoft.NET\Framework64' | gci -Directory | gci | ? Name -eq 'csc.exe' | Sort-Object VersionInfo)[-1].DirectoryName # .NET Framework
   ) | % {
     if ( $env:PATH.Split($PathDelimiter) -notcontains $_ ) {
       $env:PATH += ($PathDelimiter + $_)

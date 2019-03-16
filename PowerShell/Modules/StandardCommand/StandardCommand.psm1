@@ -45,7 +45,7 @@ function WhereIs-Command {
   $ErrorActionPreference = 'Stop'
 
   ## 環境変数PATH直下をすべて調べる
-  $Path = $env:Path.Split(';') |
+  $Path = $env:PATH.Split($Global:PathDelimiter) |
     gci -ErrorAction SilentlyContinue |
     ? { $_.BaseName -eq $Name -or $_.Name -eq $Name }
 
