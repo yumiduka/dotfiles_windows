@@ -1,12 +1,12 @@
 ﻿# 変数
 
 $ProfileRoot = Split-Path $PROFILE
-$InitialRoot = Join-Path $PSScriptRoot 'Windows'
+$InitialRoot = Join-Path $PSScriptRoot 'PowerShell'
 
 # Profile用ディレクトリ、シンボリックリンク作成
 
 (
-  @{ ItemType = 'Directory';    Path = $ProfileRoot },
+  @{ ItemType = 'Directory'; Path = $ProfileRoot; Force = $true },
   @{ ItemType = 'SymbolicLink'; Path = $env:PSModulePath.Split(';')[0]; Value = (Join-Path $InitialRoot 'Modules') },
   @{ ItemType = 'SymbolicLink'; Path = $PROFILE.CurrentUserAllHosts; Value = (Join-Path $InitialRoot 'profile.ps1') },
   @{ ItemType = 'SymbolicLink'; Path = $PROFILE; Value = (Join-Path $InitialRoot (Split-Path -Leaf $PROFILE)) },

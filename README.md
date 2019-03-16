@@ -6,8 +6,10 @@ macOS用初期セットアップファイル。
 
 初回実行スクリプトは _install.sh_ 。
 
-## Windows
+## PowerShell
 
-Windows用初期セットアップファイル。10以降用。
+Windows PowerShell / PowerShell Core用初期セットアップファイル。
+
+Windows環境以外も対応。
 
 初回実行スクリプトは _install.ps1_ 。
