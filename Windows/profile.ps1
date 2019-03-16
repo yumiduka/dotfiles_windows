@@ -133,7 +133,7 @@ if ( $psISE ) {
 
 ## scratchとプロファイルをISEで開く
 if ( Get-Command psEdit -ErrorAction SilentlyContinue ) {
-  psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $profile.CurrentUserAllHosts, $WorkplaceProfile) -ErrorAction SilentlyContinue
+  psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $PROFILE.CurrentUserAllHosts, $WorkplaceProfile) -ErrorAction SilentlyContinue
 }
 
 # 環境別プロファイルを読み込み(場所により異なる設定が必要な場合に使用)
