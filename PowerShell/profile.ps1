@@ -21,9 +21,9 @@ function Switch-Prompt {
 
 ## 管理者権限確認
 if ( $OS -eq 'Windows' ) {
-  [ScriptBlock]$Global:IsAdmin = [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544'
+  [ScriptBlock]$Global:IsAdmin = { [Security.Principal.WindowsIdentity]::GetCurrent().Owner -eq 'S-1-5-32-544' }
 } else {
-  [ScriptBlock]$Global:IsAdmin = (whoami) -match 'root'
+  [ScriptBlock]$Global:IsAdmin = { (whoami) -match 'root' }
 }
 
 ## プロンプト表示内容
