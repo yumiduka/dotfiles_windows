@@ -60,8 +60,8 @@ function Switch-Prompt {
 # 変数設定
 
 [String[]]$Global:ProgramFiles = ($env:ProgramFiles, ${env:ProgramFiles(x86)})
-[String]$Global:ProfileRoot = $PSScriptRoot
-[String]$Global:WorkplaceProfile = Join-Path $PSScriptRoot 'WorkplaceProfile.ps1'
+[String]$Global:ProfileRoot = Split-Path $PROFILE.CurrentUserCurrentHost
+[String]$Global:WorkplaceProfile = Join-Path $ProfileRoot 'WorkplaceProfile.ps1'
 [String]$Global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
 [String]$Global:GitPath = '~/Git'
 
