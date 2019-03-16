@@ -2,12 +2,13 @@
 
 $ProfileRoot = Split-Path $PROFILE
 $InitialRoot = Join-Path $PSScriptRoot 'PowerShell'
+$PathDelimiter = if ( $env:PSModulePath -match ';' ) { ';' } else { ':' }
 
 # Profile用ディレクトリ、シンボリックリンク作成
 
 (
   @{ ItemType = 'Directory'; Path = $ProfileRoot; Force = $true },
-  @{ ItemType = 'SymbolicLink'; Path = $env:PSModulePath.Split(';')[0]; Value = (Join-Path $InitialRoot 'Modules') },
+  @{ ItemType = 'SymbolicLink'; Path = $env:PSModulePath.Split($PathDelimiter)[0]; Value = (Join-Path $InitialRoot 'Modules') },
   @{ ItemType = 'SymbolicLink'; Path = $PROFILE.CurrentUserAllHosts; Value = (Join-Path $InitialRoot 'profile.ps1') },
   @{ ItemType = 'SymbolicLink'; Path = $PROFILE; Value = (Join-Path $InitialRoot (Split-Path -Leaf $PROFILE)) },
   @{ ItemType = 'SymbolicLink'; Path = '~\.fontlist'; Value = (Join-Path $PSScriptRoot '.fontlist') }

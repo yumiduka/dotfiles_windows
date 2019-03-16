@@ -64,6 +64,7 @@ function Switch-Prompt {
 [String]$Global:WorkplaceProfile = Join-Path $ProfileRoot 'WorkplaceProfile.ps1'
 [String]$Global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
 [String]$Global:GitPath = '~/Git'
+[String]$Global:PathDelimiter = if ( $env:PSModulePath -match ';' ) { ';' } else { ':' }
 
 # エイリアス設定
 
@@ -86,12 +87,9 @@ function Switch-Prompt {
     ($ProgramFiles | gci -Directory | ? Name -match 'vim' | gci | ? Name -match '^vim').DirectoryName, # vim
     ('C:\Windows\Microsoft.NET\Framework64' | gci -Directory | gci | ? Name -eq 'csc.exe' | sort VersionInfo)[-1].DirectoryName # .NET Framework
   ) | % {
-    switch -Regex -CaseSensitive ( $OS ) { 
-      'Windows' { $Delimiter = ';' }
-      default   { $Delimiter = ':' }
+    if ( $env:PATH.Split($PathDelimiter) -notcontains $_ ) {
+      $env:PATH += ($PathDelimiter + $_)
     }
-
-    if ( $env:PATH.Split($Delimiter) -notcontains $_ ) { $env:PATH += ($Delimiter + $_) }
   }
 }
 
