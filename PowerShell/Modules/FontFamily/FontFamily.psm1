@@ -1,42 +1,98 @@
 ﻿# 関数設定
 
-## UserCSSでフォント設定を上書きするための設定をクリップボードとファイルに取得
+## フォント上書き設定文を出力する
+
+function Write-FontFace {
+  param(
+    [Parameter(Mandatory)][String]$LocalFont,
+    [Parameter(Mandatory, ValueFromPipeline)][String]$SpecifiedFont
+  )
+
+  begin {
+    ## エラー時終了設定
+    $ErrorActionPreference = 'Stop'
+  }
+
+  process {
+    ## font-face設定を出力
+    ('@font-face { src: local("{0}"); font-family: "{1}"; }' -f $LocalFont, $SpecifiedFont)
+  }
+}
+
+## CSSからフォント名を抜き出す
 
 function Get-FontFamily {
   param(
-    [Parameter(ValueFromPipeline)][string]$Path = '~/Downloads/style.css',
-    [string]$FontFile = '~/.fontlist',
-    [string]$Encoding = 'utf8',
-    [string]$FontName = $Global:DefaultFont
+    [Parameter(ValueFromPipeline)][String]$Path,
+    [String]$FontFile,
+    [String]$Encoding
   )
 
   ## エラー時終了設定
   $ErrorActionPreference = 'Stop'
 
-  ## ISEならフォントリストファイルを開いておく
-  if ( $psISE ) {
-    psEdit $FontFile
+  ## 現在のフォントリストを取得
+  [String[]]$Fonts = [String[]]$BeforeFonts = gc -Path $FontFile -Encoding $Encoding
+
+  ## スタイルシートからfont-familyの設定値の内、既存のフォントリストに存在しないものだけを抽出
+  [String[]]$AddFonts = (gc -Path $Path -Encoding $Encoding) -split '[;{}<>()]' -match 'font-family *:' -replace '(font-family *:|!important)' -split ',' |
+    % { $_.Trim().Trim('"').Trim("'").Trim() } |
+    Sort-Object -Unique |
+    ? { $_ -notin $Fonts }
+
+  ## 新規フォントがない場合、終了
+  if ( ! $AddFonts ) {
+    Write-Host '新しいフォントはありません。'
+    return
   }
 
-  ## スタイルシートからfont-familyの設定値だけを取り出してフォントリストファイルに追記(ゴミが混ざりがち)
-  (gc $Path -Encoding $Encoding).Split(';').Split('}').Split('{') |
-    ? { $_ -match "font-family" } |
-    % { ($_ -replace 'font-family:').Split(',') -replace "'" -replace '"' -replace '!important' -replace "`t" -replace '^ *' -replace ' *$' } |
-    sort -Unique |
-    Out-File $FontFile -Encoding $Encoding -Append
+  ## 新規フォントを表示
+  $AddFonts
 
-  ## フォントリストを取得
-  $Fonts = (gc $FontFile -Encoding $Encoding | sort -Unique)
+  ## 更新確認
+  while ( $Reply -notmatch '^y(|es)$' ) {
+    $Reply = Read-Host -Prompt 'これらのフォントを追加してよろしいですか？ (Y/N)'
+    if ( $Reply -match '^n(|o)$' ) {
+      return
+    }
+  }
 
-  ## UserCSSのフォント乗っ取り用設定として書き出してクリップボードに書き出し(Stylus等の画面に貼り付けるため)
-  $Fonts |
-    % { '@font-face { src: local("' + $FontName + '"); font-family: "' + $_ + '"; }' } |
+  ## 重複した行を削除
+  $Fonts = $($Fonts; $AddFonts) | Sort-Object -Unique
+
+  ## 新しいフォントリストをファイルに保存
+  $Fonts | Out-File -FilePath $FontFile -Encoding $Encoding -Force
+
+  ## フォントのリストを出力
+  $Fonts
+}
+
+## font-face設定文をクリップボードに取得
+
+function Get-FontFace {
+  param(
+    [Parameter(ValueFromPipeline)][String]$Path = '~/Downloads/style.css',
+    [String]$FontFile = '~/.fontlist',
+    [String]$Encoding = 'utf8',
+    [String]$FontName = $Global:DefaultFont
+  )
+    
+  ## エラー時終了設定
+  $ErrorActionPreference = 'Stop'
+
+  ## フォント指定がない場合、エラー終了
+  if ( ! $FontName ) {
+    Write-Error -Message 'フォント指定がありません。' -Category 'NotSpecified'
+  }
+
+  ## UserCSSのフォント乗っ取り設定として書き出して、クリップボードに入れる
+  $Path |
+    Get-FontFamily -FontFile $FontFile -Encoding $Encoding |
+    Write-FontFace |
     scb
-  
-  ## フォントリストをあらためてフォントリストファイルとして作成
-  $Fonts | Out-File $FontFile -Encoding $Encoding
 }
 
 # 関数公開
 
-Export-ModuleMember -Function *
+Export-ModuleMember -Function Write-FontFace
+Export-ModuleMember -Function Get-FontFace
