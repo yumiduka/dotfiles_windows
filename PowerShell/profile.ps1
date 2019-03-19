@@ -75,6 +75,12 @@ if ( $OS -eq 'Windows' ) {
   sal @_
 }
 
+## クリップボード格納コマンド統一
+switch ( $OS ) {
+  'macOS' { sal -Name 'scb' -Value 'pbcopy' -Option AllScope -Scope Global }
+  'Linux' { sal -Name 'scb' -Value 'xsel -bi' -Option AllScope -Scope Global }
+}
+
 # PATH初期値設定
 
 if ( (Split-Path -Leaf $env:SHELL) -eq 'pwsh' ) {
