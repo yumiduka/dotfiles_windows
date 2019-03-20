@@ -47,7 +47,7 @@ function Get-FontFamily {
   }
 
   ## 新規フォントを表示
-  $AddFonts
+  $AddFonts | % { Write-Host $_ }
 
   ## 更新確認
   while ( $Reply -notmatch '^y(|es)$' ) {
