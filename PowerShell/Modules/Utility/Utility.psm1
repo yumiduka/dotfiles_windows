@@ -3,8 +3,8 @@
 ## PC稼働時間を取得する(一日の中で一番最初と一番最後にイベントログが書かれた時間を見るため、日をまたぐ稼働時間は取得できない)
 function Get-WorkTime {
   param(
-    [datetime]$Today = (Get-Date),
-    [datetime]$TargetDay = ($Today.AddDays(-8))
+    [DateTime]$Today = (Get-Date),
+    [DateTime]$TargetDay = ($Today.AddDays(-8))
   )
 
   ## 指定期間のイベントログ(システム)を取得
@@ -15,7 +15,7 @@ function Get-WorkTime {
     ## 対象日の最新、最古エントリの作成時間を取得
     $StartWork,$EndWork = $EventLogs |
       ? { $_.TimeGenerated.Date -eq $TargetDay.Date } |
-      sort TimeGenerated |
+      Sort-Object TimeGenerated |
       select TimeGenerated -First 1 -Last 1
 
     ## 日付・開始時間・終了時間を表示
@@ -32,8 +32,8 @@ function Get-WorkTime {
 
 function Import-Json {
   param(
-    [Parameter(ValueFromPipeline)][string]$Path,
-    [string]$Encoding = 'utf8'
+    [Parameter(ValueFromPipeline)][String]$Path,
+    [String]$Encoding = 'utf8'
   )
 
   ## エラー時終了設定
@@ -49,11 +49,11 @@ function Import-Json {
 function Cut-Image {
   param(
     [Parameter(Mandatory, ValueFromPipeline)][IO.FileInfo]$File,
-    [uint32]$Top = 0,
-    [uint32]$Bottom = 0,
-    [uint32]$Left = 0,
-    [uint32]$Right = 0,
-    [string]$BackupExtension = 'org'
+    [UInt32]$Top = 0,
+    [UInt32]$Bottom = 0,
+    [UInt32]$Left = 0,
+    [UInt32]$Right = 0,
+    [String]$BackupExtension = 'org'
   )
 
   begin {
@@ -113,8 +113,8 @@ function Cut-Image {
 
 function Read-CSharp {
   param(
-    [Parameter(ValueFromPipeline)][string]$Path,
-    [string]$Encoding = 'utf8'
+    [Parameter(ValueFromPipeline)][String]$Path,
+    [String]$Encoding = 'utf8'
   )
 
   begin {
