@@ -37,6 +37,7 @@ function Get-FontFamily {
   ## スタイルシートからfont-familyの設定値の内、既存のフォントリストに存在しないものだけを抽出
   [String[]]$AddFonts = (gc -Path $Path -Encoding $Encoding) -split '[;{}<>()]' -match 'font-family *:' -replace '(font-family *:|!important)' -split ',' |
     % { $_.Trim().Trim('"').Trim("'").Trim() } |
+    ? { $_ -notmatch 'icon|Emoji' } |
     Sort-Object -Unique |
     ? { $_ -notin $Fonts }
 
