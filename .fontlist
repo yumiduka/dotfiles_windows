@@ -1,8 +1,9 @@
-﻿*sans-serif
 _courier new
+--Roboto
+-apple-system
+*sans-serif
 Andale Mono
 Apple TP
--apple-system
 Arial
 arial black
 Ariel
@@ -11,7 +12,6 @@ Avenir
 Avenir Next
 BBAlpha Sans
 BlinkMacSystemFont
-blogicon
 Calibri
 Candara
 Cantarell
@@ -23,7 +23,6 @@ Courier-New
 cursive
 dnp-shuei-gothic-kin-std
 Droid Sans
-FabricMDL2Icons
 Fira Sans
 FontAwesome
 Georgia
@@ -67,17 +66,17 @@ MS Gothic
 MS Mincho
 MS PGothic
 MS PMincho
-MS Pｺﾞｼｯｸ
 MS Pゴシック
-ＭＳ Ｐゴシック
-ＭＳ Ｐ明朝
+MS Pｺﾞｼｯｸ
 MS UI Gothic
-ＭＳ ゴシック
-ＭＳ 明朝
-ＭＳ\ Ｐゴシック
 Myriad Pro
 Myriad Set Pro
 Myriad Web
+ＭＳ Ｐゴシック
+ＭＳ Ｐ明朝
+ＭＳ ゴシック
+ＭＳ 明朝
+ＭＳ\ Ｐゴシック
 Noto Sans
 Noto Sans JP
 Noto Serif JP
@@ -92,7 +91,6 @@ QTS Font
 Raleway
 Ricty
 Roboto
---Roboto
 Roboto Slab
 sans-serif
 Segoe UI
@@ -101,9 +99,9 @@ Segoe UI Web Regular
 Segoe UI WestEuropean
 self
 serif
-SF Pro Icons
 SF Pro JP
 SF Pro Text
+SFMono-Regular
 Sintony
 Source Code Pro
 source-han-sans-japanese
