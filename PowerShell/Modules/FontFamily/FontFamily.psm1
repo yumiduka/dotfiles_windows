@@ -15,7 +15,7 @@ function Write-FontFace {
 
   process {
     ## font-face設定を出力
-    ('@font-face { src: local("{0}"); font-family: "{1}"; }' -f $LocalFont, $SpecifiedFont)
+    ('@font-face { src: local("' + $LocalFont + '"); font-family: "' + $SpecifiedFont + '"; }')
   }
 }
 
@@ -88,7 +88,7 @@ function Get-FontFace {
   ## UserCSSのフォント乗っ取り設定として書き出して、クリップボードに入れる
   $Path |
     Get-FontFamily -FontFile $FontFile -Encoding $Encoding |
-    Write-FontFace |
+    Write-FontFace -LocalFont $FontName |
     scb
 }
 
