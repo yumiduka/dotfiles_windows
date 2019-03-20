@@ -11,10 +11,10 @@ function Set-CurrentDirectory {
   $ErrorActionPreference = 'Stop'
 
   ## 引数の型により動作を変更
-  [string]$Path = if ( $Target -is [Int] -and $Global:OldPwd[$Target] ) {
+  [String]$Path = if ( $Target -is [Int] -and $Global:OldPwd[$Target] ) {
     ## int型で$OldPwdのn番目が存在する場合、そのパスを移動先にする
     $Global:OldPwd[$Target].Path
-  } elseif ( $Target -is [string] ) {
+  } elseif ( $Target -is [String] ) {
     ## string型の場合、そのままパスを移動先にする
     $Target
   } elseif ( $Target -is [IO.DirectoryInfo] ) {
@@ -26,7 +26,7 @@ function Set-CurrentDirectory {
   }
 
   ## 移動前に現在のディレクトリを$OldPwdに番号付きで格納する
-  [object[]]$Global:OldPwd += Get-Location |
+  [Object[]]$Global:OldPwd += Get-Location |
     select @{n='Id';e={$Global:OldPwd.Count}},
            @{n='Path';e={$_.ProviderPath}}
 
@@ -38,7 +38,7 @@ function Set-CurrentDirectory {
 
 function WhereIs-Command {
   param(
-    [parameter(Mandatory, ValueFromPipeline)][string]$Name
+    [parameter(Mandatory, ValueFromPipeline)][String]$Name
   )
 
   ## エラー時終了設定
@@ -61,9 +61,9 @@ function WhereIs-Command {
 
 function Get-ScriptTime {
   param(
-    [Parameter(Mandatory, ValueFromPipeline)][scriptblock]$Command,
-    [uint32]$Count = 10,
-    [switch]$Table
+    [Parameter(Mandatory, ValueFromPipeline)][ScriptBlock]$Command,
+    [UInt32]$Count = 10,
+    [Switch]$Table
   )
 
   ## エラー時終了設定
@@ -87,14 +87,14 @@ function Get-ScriptTime {
 
 function Find-ChildItem {
   param(
-    [switch]$File,
-    [switch]$Directory,
-    [switch]$Recurse = $true,
-    [string]$Name,
-    [string]$Parent,
-    [string]$Extension,
-    [string]$FullName,
-    [Parameter(ValueFromPipeline)][string]$Path = (Get-Location).ProviderPath
+    [Switch]$File,
+    [Switch]$Directory,
+    [Switch]$Recurse = $true,
+    [String]$Name,
+    [String]$Parent,
+    [String]$Extension,
+    [String]$FullName,
+    [Parameter(ValueFromPipeline)][String]$Path = (Get-Location).ProviderPath
   )
 
   ## エラー時終了設定

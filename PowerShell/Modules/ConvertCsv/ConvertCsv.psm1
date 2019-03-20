@@ -5,10 +5,10 @@
 function Csv2Excel {
   param(
     [parameter(ValueFromPipeline)][IO.FileInfo]$File,
-    [string]$Encoding,
-    [object[]]$Text,
-    [string[]]$Header,
-    [string[]]$Filter
+    [String]$Encoding,
+    [Object[]]$Text,
+    [String[]]$Header,
+    [String[]]$Filter
   )
   
   begin {
@@ -16,7 +16,7 @@ function Csv2Excel {
     $ErrorActionPreference = 'Stop'
 
     ## CSV読み込み時のヘッダ行を無視するための値
-    [int]$Skip = 0
+    [Int]$Skip = 0
   }
 
   process {

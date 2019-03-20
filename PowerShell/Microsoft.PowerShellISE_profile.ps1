@@ -1,10 +1,10 @@
-# ƒtƒHƒ“ƒgEƒc[ƒ‹ƒo[İ’è
+# ãƒ•ã‚©ãƒ³ãƒˆãƒ»ãƒ„ãƒ¼ãƒ«ãƒãƒ¼è¨­å®š
 
 $psISE.Options.SelectedScriptPaneState = "Top"
 $psISE.Options.Fontsize = if ( & $Global:IsUHD ) { 9 } else { 6 }
 $psISE.Options.FontName = $DefaultFont
 $psISE.Options.ShowToolBar = $false
 
-# scratch‚Æƒvƒƒtƒ@ƒCƒ‹‚ğISE‚ÅŠJ‚­
+# scratchã¨ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ISEã§é–‹ã
 
 psEdit ((Join-Path $ProfileRoot 'scratch.ps1'), $PROFILE.CurrentUserAllHosts, $PROFILE, $WorkplaceProfile, $WorkplaceFiles) -ErrorAction SilentlyContinue

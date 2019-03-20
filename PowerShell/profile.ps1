@@ -59,7 +59,7 @@ if ( $OS -eq 'Windows' ) {
 [String[]]$Global:ProgramFiles = ($env:ProgramFiles, ${env:ProgramFiles(x86)})
 [String]$Global:ProfileRoot = Split-Path $PROFILE
 [String]$Global:WorkplaceProfile = Join-Path $ProfileRoot 'WorkplaceProfile.ps1'
-[String]$Global:DefaultFont = if ( & $global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
+[String]$Global:DefaultFont = if ( & $Global:IsUHD ) { 'Ricty Discord' } else { '恵梨沙フォント+Osaka－等幅' }
 [String]$Global:GitPath = '~/Git'
 [String]$Global:PathDelimiter = if ( $env:PSModulePath -match ';' ) { ';' } else { ':' }
 
