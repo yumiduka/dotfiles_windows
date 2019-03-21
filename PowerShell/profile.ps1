@@ -83,9 +83,9 @@ switch ( $OS ) {
 
 # PATH初期値設定
 
-if ( (Split-Path -Leaf $env:SHELL) -eq 'pwsh' ) {
-  switch ( $OS ) {
-    'macOS' {
+switch ( $OS ) {
+  'macOS' {
+    if ( (Split-Path -Leaf $env:SHELL) -eq 'pwsh' ) {
       ## PowerShellのディレクトリを先頭にする
       $env:PATH = $env:PATH.Split($PathDelimiter)[0]
       ## bash用PATH初期値設定コマンドから初期値を末尾に追加
@@ -93,9 +93,9 @@ if ( (Split-Path -Leaf $env:SHELL) -eq 'pwsh' ) {
       ## 両端のパス区切り文字を除外
       $env:PATH = $env:PATH.Trim($PathDelimiter)
     }
-    'Linux' {
-      # Linuxの環境が用意できたら追加予定。
-    }
+  }
+  'Linux' {
+    # Linuxの環境が用意できたら追加予定
   }
 }
 
