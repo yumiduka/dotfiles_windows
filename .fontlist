@@ -1,20 +1,23 @@
+﻿*sans-serif
 _courier new
---Roboto
--apple-system
-*sans-serif
+Allan
 Andale Mono
 Apple TP
+-apple-system
 Arial
 arial black
+Arial Bold
 Ariel
 AtlasGrotesk
 Avenir
 Avenir Next
 BBAlpha Sans
 BlinkMacSystemFont
+Brush Script MT
 Calibri
 Candara
 Cantarell
+clean
 Consolas
 Consolata
 Courier
@@ -25,7 +28,9 @@ dnp-shuei-gothic-kin-std
 Droid Sans
 Fira Sans
 FontAwesome
+Gadget
 Georgia
+Google Sans
 Gotham SSm 4r
 Helvetica
 Helvetica Condensed Bold
@@ -34,6 +39,7 @@ Hiragino Kaku Gothic Pro
 Hiragino Kaku Gothic ProN
 HiraKakuProN-W3
 Homemade Apple
+icomoon
 Inconsolata
 inherit
 IPA MONAPGOTHIC
@@ -62,21 +68,22 @@ Mona
 Monaco
 MonacoRegular
 monospace
+Montserrat
 MS Gothic
 MS Mincho
 MS PGothic
 MS PMincho
-MS Pゴシック
 MS Pｺﾞｼｯｸ
-MS UI Gothic
-Myriad Pro
-Myriad Set Pro
-Myriad Web
+MS Pゴシック
 ＭＳ Ｐゴシック
 ＭＳ Ｐ明朝
+MS UI Gothic
 ＭＳ ゴシック
 ＭＳ 明朝
 ＭＳ\ Ｐゴシック
+Myriad Pro
+Myriad Set Pro
+Myriad Web
 Noto Sans
 Noto Sans JP
 Noto Serif JP
@@ -87,12 +94,18 @@ proxima-nova
 PT Sans
 PT Sans Caption
 PT Serif
+q_serif
 QTS Font
 Raleway
 Ricty
 Roboto
+--Roboto
 Roboto Slab
+RobotoDraft
+san-serif
 sans-serif
+sans-serif-light
+sans-serif-medium
 Segoe UI
 Segoe UI Symbol
 Segoe UI Web Regular
