@@ -52,6 +52,8 @@ mac_apps:
     name: Numbers
   - id: 409183694
     name: Keynote
+  - id: 497799835
+    name: Xcode
   - id: 682658836
     name: GarageBand
   - id: 539883307 
