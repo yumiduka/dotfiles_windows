@@ -7,25 +7,22 @@ homebrew_packages:
   - name: python
   - name: python3
   - name: mas
-  # 言語
-  - name: go
+  # GNU
+  - name: gnu-sed
+  - name: coreutils
+  - name: findutils
   # Git
   - name: git
-  - name: hub
   - name: ghq
   # ターミナル関連
   - name: peco
-  - name: tmux
-  - name: zsh
-  - name: zsh-syntax-highlighting
   - name: exa
-  # エディタ
-  - name: vim
+  - name: tokei
   - name: youtube-dl
   - name: ffmpeg
   - name: zopfli
-  # なんだっけ…？
-  - name: direnv
+  # エディタ
+  - name: vim
   # curl
   - name: openssl
   - name: curl
@@ -37,11 +34,11 @@ homebrew_cask_packages:
   - name: steam
   - name: iina
   - name: the-unarchiver
-  - name: dropbox
   - name: google-japanese-ime
   - name: obs
   - name: discord
   - name: kindle
+  - name: docker
 
 mac_apps:
   - id: 411213048
