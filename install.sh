@@ -4,11 +4,11 @@
 xcode-select --install
 
 ## homebrew
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 ## setup
-brew upgrade
 brew update
+brew upgrade
 brew doctor || exit 1
 
 ## python & ansible & git
