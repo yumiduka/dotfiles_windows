@@ -1,4 +1,6 @@
-﻿# profile配布
+﻿#!/usr/bin/env pwsh
+
+# profile配布
 
 & (Join-Path $PSScriptRoot 'PowerShell.ps1')
 

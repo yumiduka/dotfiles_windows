@@ -1,4 +1,6 @@
-﻿# 変数
+﻿#!/usr/bin/env pwsh
+
+# 変数
 
 $ProfileRoot = Split-Path $PROFILE
 $InitialRoot = Join-Path $PSScriptRoot 'PowerShell'
